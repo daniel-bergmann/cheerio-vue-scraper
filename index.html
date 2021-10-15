@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <div v-for="d in data" :key="d.title">
+        <a target="_blank" :href=`https://www.nytimes.com/${d.link}`>
+          <img style="height: 300px" :src="d.pic" alt="" />
+          <h2>{{ d.title}}</h2>
+        </a>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3.0.5"></script>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            data: [],
+          };
+        },
+        async created() {
+          try {
+            const res = await fetch('http://localhost:5000/api/nyt');
+            const data = await res.json();
+            let content = data;
+            this.data = content;
+          } catch {
+            console.log('Try again m8...');
+          }
+        },
+      });
+
+      app.mount('#app');
+    </script>
+  </body>
+</html>
